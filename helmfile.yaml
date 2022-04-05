@@ -36,7 +36,8 @@ releases:
   - mongodb/values.yaml
 
 - name: perfana
-  chart: ../perfana-helm-chart/charts/perfana
+  chart: perfana/perfana
+#   chart: ../perfana-helm-chart/charts/perfana
   needs:
   - mongodb
   values:
