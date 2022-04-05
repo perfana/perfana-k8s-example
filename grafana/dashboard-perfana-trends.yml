@@ -1,0 +1,569 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: perfana-trends
+  namespace: perfana
+  labels:
+    grafana_dashboard: "1"
+data:
+  perfana-trends.json: |
+    {
+      "__inputs": [
+        {
+          "name": "DS_JSON_API",
+          "label": "JSON API",
+          "description": "",
+          "type": "datasource",
+          "pluginId": "marcusolsson-json-datasource",
+          "pluginName": "JSON API"
+        },
+        {
+          "name": "VAR_APPLICATION",
+          "type": "constant",
+          "label": "application",
+          "value": "OptimusPrime",
+          "description": ""
+        },
+        {
+          "name": "VAR_TESTTYPE",
+          "type": "constant",
+          "label": "testType",
+          "value": "stressTest",
+          "description": ""
+        },
+        {
+          "name": "VAR_TESTENVIRONMENT",
+          "type": "constant",
+          "label": "testEnvironment",
+          "value": "local",
+          "description": ""
+        },
+        {
+          "name": "VAR_DASHBOARD",
+          "type": "constant",
+          "label": "dashboard",
+          "value": "Gatling InfluxDb",
+          "description": ""
+        },
+        {
+          "name": "VAR_BENCHMARKID",
+          "type": "constant",
+          "label": "benchmarkId",
+          "value": "CMXaXqz4uTdtP5z7L",
+          "description": ""
+        },
+        {
+          "name": "VAR_EVALUATETYPE",
+          "type": "constant",
+          "label": "evaluateType",
+          "value": "avg",
+          "description": ""
+        },
+        {
+          "name": "VAR_PANEL",
+          "type": "constant",
+          "label": "panel",
+          "value": "99th percentile",
+          "description": ""
+        },
+        {
+          "name": "VAR_TAGS",
+          "type": "constant",
+          "label": "tags",
+          "value": "",
+          "description": ""
+        }
+      ],
+      "__elements": [],
+      "__requires": [
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "8.3.1"
+        },
+        {
+          "type": "panel",
+          "id": "graph",
+          "name": "Graph (old)",
+          "version": ""
+        },
+        {
+          "type": "datasource",
+          "id": "marcusolsson-json-datasource",
+          "name": "JSON API",
+          "version": "1.3.1"
+        }
+      ],
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          },
+          {
+            "datasource": "${DS_JSON_API}",
+            "enable": true,
+            "hide": false,
+            "iconColor": "rgba(255, 96, 96, 1)",
+            "limit": 500,
+            "mappings": {
+              "tags": {
+                "source": "field",
+                "value": "tags"
+              },
+              "text": {
+                "source": "field",
+                "value": "annotation"
+              },
+              "time": {
+                "source": "field",
+                "value": "time"
+              },
+              "title": {
+                "source": "field",
+                "value": "testRunId"
+              }
+            },
+            "name": "test run",
+            "showIn": 0,
+            "target": {
+              "cacheDurationSeconds": 5,
+              "fields": [
+                {
+                  "jsonPath": "$.[*].time",
+                  "type": "time"
+                },
+                {
+                  "jsonPath": "$.[*].annotation",
+                  "name": "",
+                  "type": "string"
+                },
+                {
+                  "jsonPath": "$.[*].testRunId",
+                  "name": "",
+                  "type": "string"
+                },
+                {
+                  "jsonPath": "$.[*].tags",
+                  "language": "jsonpath",
+                  "name": ""
+                }
+              ],
+              "method": "GET",
+              "params": [
+                [
+                  "systemUnderTest",
+                  "${application}"
+                ],
+                [
+                  "testType",
+                  "${testType}"
+                ],
+                [
+                  "testEnvironment",
+                  "${testEnvironment}"
+                ],
+                [
+                  "dashboard",
+                  "${dashboard}"
+                ],
+                [
+                  "panel",
+                  "${panel}"
+                ],
+                [
+                  "benchmarkId",
+                  "${benchmarkId}"
+                ],
+                [
+                  "to",
+                  "$__isoTo()"
+                ],
+                [
+                  "from",
+                  "$__isoFrom()"
+                ],
+                [
+                  "tags",
+                  "${tags}"
+                ]
+              ],
+              "query": "SELECT title,description from events WHERE $timeFilter AND \"templatingValues\" =~ /.*$application.*/ AND \"templatingValues\" =~ /.*$testType.*/  AND \"templatingValues\" =~ /.*$testEnvironment.*/",
+              "queryParams": "",
+              "urlPath": "/api/trends"
+            },
+            "textColumn": "description",
+            "type": "event"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": null,
+      "iteration": 1645363622051,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${DS_JSON_API}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "hiddenSeries": false,
+          "id": 1,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 3,
+          "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.3.1",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "repeat": "panel",
+          "repeatDirection": "h",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${DS_JSON_API}"
+              },
+              "experimentalGroupByField": "target",
+              "fields": [
+                {
+                  "jsonPath": "$.[*].time",
+                  "type": "time"
+                },
+                {
+                  "jsonPath": "$.[*].target",
+                  "name": "",
+                  "type": "string"
+                },
+                {
+                  "jsonPath": "$.[*].value",
+                  "name": "",
+                  "type": "number"
+                }
+              ],
+              "method": "GET",
+              "params": [
+                [
+                  "systemUnderTest",
+                  "${application}"
+                ],
+                [
+                  "testType",
+                  "${testType}"
+                ],
+                [
+                  "testEnvironment",
+                  "${testEnvironment}"
+                ],
+                [
+                  "dashboard",
+                  "${dashboard}"
+                ],
+                [
+                  "benchmarkId",
+                  "${benchmarkId}"
+                ],
+                [
+                  "evaluateType",
+                  "${evaluateType}"
+                ],
+                [
+                  "to",
+                  "$__isoTo()"
+                ],
+                [
+                  "from",
+                  "$__isoFrom()"
+                ],
+                [
+                  "tags",
+                  "${tags}"
+                ]
+              ],
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/api/trends"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "$panel ($evaluateType)",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "logBase": 1,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        }
+      ],
+      "refresh": "",
+      "schemaVersion": 33,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "hide": 2,
+            "name": "application",
+            "query": "${VAR_APPLICATION}",
+            "skipUrlSync": false,
+            "type": "constant",
+            "current": {
+              "value": "${VAR_APPLICATION}",
+              "text": "${VAR_APPLICATION}",
+              "selected": false
+            },
+            "options": [
+              {
+                "value": "${VAR_APPLICATION}",
+                "text": "${VAR_APPLICATION}",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "hide": 2,
+            "name": "testType",
+            "query": "${VAR_TESTTYPE}",
+            "skipUrlSync": false,
+            "type": "constant",
+            "current": {
+              "value": "${VAR_TESTTYPE}",
+              "text": "${VAR_TESTTYPE}",
+              "selected": false
+            },
+            "options": [
+              {
+                "value": "${VAR_TESTTYPE}",
+                "text": "${VAR_TESTTYPE}",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "hide": 2,
+            "name": "testEnvironment",
+            "query": "${VAR_TESTENVIRONMENT}",
+            "skipUrlSync": false,
+            "type": "constant",
+            "current": {
+              "value": "${VAR_TESTENVIRONMENT}",
+              "text": "${VAR_TESTENVIRONMENT}",
+              "selected": false
+            },
+            "options": [
+              {
+                "value": "${VAR_TESTENVIRONMENT}",
+                "text": "${VAR_TESTENVIRONMENT}",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "hide": 2,
+            "name": "dashboard",
+            "query": "${VAR_DASHBOARD}",
+            "skipUrlSync": false,
+            "type": "constant",
+            "current": {
+              "value": "${VAR_DASHBOARD}",
+              "text": "${VAR_DASHBOARD}",
+              "selected": false
+            },
+            "options": [
+              {
+                "value": "${VAR_DASHBOARD}",
+                "text": "${VAR_DASHBOARD}",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "hide": 2,
+            "name": "benchmarkId",
+            "query": "${VAR_BENCHMARKID}",
+            "skipUrlSync": false,
+            "type": "constant",
+            "current": {
+              "value": "${VAR_BENCHMARKID}",
+              "text": "${VAR_BENCHMARKID}",
+              "selected": false
+            },
+            "options": [
+              {
+                "value": "${VAR_BENCHMARKID}",
+                "text": "${VAR_BENCHMARKID}",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "hide": 2,
+            "name": "evaluateType",
+            "query": "${VAR_EVALUATETYPE}",
+            "skipUrlSync": false,
+            "type": "constant",
+            "current": {
+              "value": "${VAR_EVALUATETYPE}",
+              "text": "${VAR_EVALUATETYPE}",
+              "selected": false
+            },
+            "options": [
+              {
+                "value": "${VAR_EVALUATETYPE}",
+                "text": "${VAR_EVALUATETYPE}",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "hide": 2,
+            "name": "panel",
+            "query": "${VAR_PANEL}",
+            "skipUrlSync": false,
+            "type": "constant",
+            "current": {
+              "value": "${VAR_PANEL}",
+              "text": "${VAR_PANEL}",
+              "selected": false
+            },
+            "options": [
+              {
+                "value": "${VAR_PANEL}",
+                "text": "${VAR_PANEL}",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "hide": 2,
+            "name": "tags",
+            "query": "${VAR_TAGS}",
+            "skipUrlSync": false,
+            "type": "constant",
+            "current": {
+              "value": "${VAR_TAGS}",
+              "text": "${VAR_TAGS}",
+              "selected": false
+            },
+            "options": [
+              {
+                "value": "${VAR_TAGS}",
+                "text": "${VAR_TAGS}",
+                "selected": false
+              }
+            ]
+          }
+        ]
+      },
+      "time": {
+        "from": "2021-08-19T13:04:51.682Z",
+        "to": "2021-08-19T13:28:30.189Z"
+      },
+      "timepicker": {
+        "refresh_intervals": [
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ],
+        "time_options": [
+          "5m",
+          "15m",
+          "1h",
+          "6h",
+          "12h",
+          "24h",
+          "2d",
+          "7d",
+          "30d"
+        ]
+      },
+      "timezone": "browser",
+      "title": "Perfana trends",
+      "uid": "perfana-trends",
+      "version": 4,
+      "weekStart": ""
+    }

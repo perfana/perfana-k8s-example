@@ -1,0 +1,19 @@
+# See default values at https://github.com/bitnami/charts/blob/master/bitnami/mongodb/values.yaml
+architecture: replicaset
+auth:
+    enabled: true
+    usernames: [perfana]
+    databases: [perfana]
+    existingSecret: mongo-credentials
+replicaSetName: rs0
+replicaSetHostnames: true
+replicaCount: 2
+image:
+    registry: docker.io
+    repository: bitnami/mongodb
+    tag: "5.0"
+    pullPolicy: IfNotPresent
+persistence:
+    enabled: true
+    storageClass: hcloud-volumes
+    size: 10Gi

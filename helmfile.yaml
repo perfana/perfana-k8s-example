@@ -1,0 +1,44 @@
+repositories:
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
+- name: influxdata
+  url: https://helm.influxdata.com/
+- name: grafana
+  url: https://grafana.github.io/helm-charts
+- name: perfana
+  url: https://perfana.github.io/perfana-helm-chart
+
+helmDefaults:
+    wait: true
+    waitForJobs: true
+
+releases:
+- name: mysql
+  chart: bitnami/mysql
+  values:
+    - mysql/values.yaml
+
+#- name: influxdb
+#    chart: influxdata/influxdb
+#    values:
+#    - values_influxdb.yaml
+#
+- name: grafana
+  chart: grafana/grafana
+  needs:
+  - mysql
+  values:
+  - grafana/values.yaml
+
+- name: mongodb
+  chart: bitnami/mongodb
+  values:
+  - mongodb/values.yaml
+
+- name: perfana
+  chart: ../perfana-helm-chart/charts/perfana
+  needs:
+  - mongodb
+  values:
+  - perfana/values.yaml
+

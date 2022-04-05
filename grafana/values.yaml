@@ -1,0 +1,154 @@
+# See default values at https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+admin:
+    existingSecret: grafana-credentials
+    userKey: admin-user
+    passwordKey: admin-password
+extraSecretMounts:
+  - name: grafana-database
+    secretName: grafana-database
+    defaultMode: 0440
+    mountPath: /etc/secrets/grafana-database
+    readOnly: true
+  - name: perfana-api-credentials
+    secretName: perfana-api-credentials
+    defaultMode: 0440
+    mountPath: /etc/secrets/perfana-api-credentials
+    readOnly: true
+plugins:
+   - marcusolsson-json-datasource
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: perfana-JSON-API
+      type: marcusolsson-json-datasource
+      url: http://perfana:3000
+      access: proxy
+      basicAuth: true
+      editable: false
+      jsonDatasecureJsonData:
+        basicAuthUser: $__file{/etc/secrets/perfana-api-credentials/perfanaApiUser}
+        basicAuthPassword: $__file{/etc/secrets/perfana-api-credentials/perfanaApiPassword}
+notifiers:
+  notifiers.yaml:
+    notifiers:
+    - name: perfana-webhook
+      type: webhook
+      uid: perfana
+      org_id: 1
+      is_default: true
+      settings:
+        autoResolve: true
+        httpMethod: POST
+        uploadImage: false
+        url: http://perfana:3000/api/grafana-alerts
+        basicAuth: true
+        jsonDatasecureJsonData:
+          basicAuthUser: $__file{/etc/secrets/perfana-api-credentials/perfanaApiUser}
+          basicAuthPassword: $__file{/etc/secrets/perfana-api-credentials/perfanaApiPassword}
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'perfana-dashboards'
+      orgId: 1
+      folder: 'Perfana dashboards'
+      type: file
+      disableDeletion: false
+      editable: false
+      options:
+        path: /var/lib/grafana/dashboards/perfana-dashboards
+dashboards:
+  perfana-dashboards:
+     perfana-trends:
+       file: dashboards/perfana-trends.json
+     perfana-check-results-over-time:
+       file: dashboards/perfana-check-results-over-time.json
+     perfana-check-results-over-time-per-team:
+       file: dashboards/perfana-check-results-over-time-per-team.json
+     perfana-check-results-over-time-per-system-under-test:
+       file: dashboards/perfana-check-results-over-time-per-system-under-test.json
+grafana.ini:
+    paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+    analytics:
+        check_for_updates: true
+    log:
+        mode: console
+    grafana_net:
+        url: https://grafana.net
+    # database
+    database:
+        url: $__file{/etc/secrets/grafana-database/url}
+        max_open_conn: 100
+    # server
+    server:
+        domain: grafana.dylan.perfana.cloud
+        root_url: https://grafana.${CLUSTER_URL}
+    # sesion
+    session:
+        provider: mysql
+        provider_config: $__file{/etc/secrets/grafana-database/provider_config}
+        cookie_name: GF_SESSION_COOKIE
+        cookie_secure: false'
+    auth.anonymous:
+        enabled: true
+        org_role: Viewer
+    # security
+    security:
+        allow_embedding: true## grafana Authentication can be enabled with the following values on grafana.ini
+sidecar:
+  image:
+    repository: quay.io/kiwigrid/k8s-sidecar
+    tag: 1.10.7
+    sha: ""
+  imagePullPolicy: IfNotPresent
+  resources: {}
+  enableUniqueFilenames: false
+  dashboards:
+    enabled: true
+    SCProvider: true
+    label: grafana_dashboard
+    labelValue: "1"
+    folder: /tmp/dashboards
+    defaultFolderName: null
+    searchNamespace: null
+    resource: both
+    folderAnnotation: null
+    provider:
+      name: sidecarProvider
+      orgid: 1
+      folder: 'Perfana dashboards'
+      type: file
+      disableDelete: true
+      allowUiUpdates: false
+      foldersFromFilesStructure: false
+  datasources:
+    enabled: false
+  notifiers:
+    enabled: false
+persistence:
+  type: pvc
+  enabled: true
+  storageClassName: hcloud-volumes
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  finalizers:
+    - kubernetes.io/pvc-protection
+# ingress:
+#   enabled: true
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     cert-manager.io/cluster-issuer: "letsencrypt-staging"
+#   path: /
+#   pathType: ImplementationSpecific
+#   hosts:
+#     - grafana.${CLUSTER_URL}
+#   tls:
+#     - hosts:
+#         - grafana.${CLUSTER_URL}
+#       secretName: grafana-tls

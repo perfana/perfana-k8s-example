@@ -1,0 +1,60 @@
+existingSecret:
+    mongoUrl: mongo-url
+    mongoOplogUrl: mongo-url
+    meteorSettings: meteor-settings
+
+perfanaFe:
+  image:
+    repository: perfana/perfana-fe
+    tag: 2.64.0
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+    targetPort: http
+  ingress:
+    enabled: false
+#   ingress:
+#     enabled: true
+#     annotations:
+#       kubernetes.io/ingress.class: nginx
+#       cert-manager.io/cluster-issuer: "letsencrypt-staging"
+#     hosts:
+#       - host: ${CLUSTER_URL}
+#         paths:
+#           - path: /
+#             pathType: ImplementationSpecific
+#     tls:
+#       - hosts:
+#           - ${CLUSTER_URL}
+#         secretName: perfana-tls
+  resources:
+  env:
+#     ROOT_URL: https://${CLUSTER_URL}
+    ROOT_URL: https://perfana-fe
+    PORT: 3000
+
+perfanaGrafana:
+    replicaCount: 1
+    env:
+        SYNC_INTERVAL: 30000  # 30 seconds
+
+perfanaCheck:
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 9191
+    targetPort: http
+  env:
+    SPRING_PROFILES_ACTIVE: "prd"
+    JAVA_TOOL_OPTIONS: -Dlogging.level.root=INFO
+
+perfanaSnapshot:
+  replicaCount: 2
+  resources:
+    limits:
+     cpu: 2
+     memory: 1Gi
+    requests:
+     cpu: 1
+     memory: 1Gi
