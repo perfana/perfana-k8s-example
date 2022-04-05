@@ -50,7 +50,7 @@ perfanaCheck:
     JAVA_TOOL_OPTIONS: -Dlogging.level.root=INFO
 
 perfanaSnapshot:
-  replicaCount: 2
+  replicaCount: 1
   resources:
     limits:
      cpu: 2
