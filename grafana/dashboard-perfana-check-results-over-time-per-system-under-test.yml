@@ -52,7 +52,7 @@ data:
           "type": "row"
         },
         {
-          "datasource": "JSON API",
+          "datasource": "JSON-API",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -211,7 +211,7 @@ data:
               "text": "bff",
               "value": "bff"
             },
-            "datasource": "JSON API",
+            "datasource": "JSON-API",
             "definition": "$[*]",
             "description": null,
             "error": {
@@ -263,7 +263,7 @@ data:
               "text": "All",
               "value": "$__all"
             },
-            "datasource": "JSON API",
+            "datasource": "JSON-API",
             "definition": "$[*].label",
             "description": null,
             "error": {
@@ -316,7 +316,7 @@ data:
               "text": "All",
               "value": "$__all"
             },
-            "datasource": "JSON API",
+            "datasource": "JSON-API",
             "definition": "$[*]",
             "description": null,
             "error": {

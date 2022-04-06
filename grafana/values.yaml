@@ -1,8 +1,11 @@
 # See default values at https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+image:
+  repository: grafana/grafana
+  tag: 8.3.1
 admin:
-    existingSecret: grafana-credentials
-    userKey: admin-user
-    passwordKey: admin-password
+  existingSecret: grafana-credentials
+  userKey: admin-user
+  passwordKey: admin-password
 extraSecretMounts:
   - name: grafana-database
     secretName: grafana-database
@@ -15,20 +18,32 @@ extraSecretMounts:
     mountPath: /etc/secrets/perfana-api-credentials
     readOnly: true
 plugins:
-   - marcusolsson-json-datasource
+  - marcusolsson-json-datasource
 datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-    - name: perfana-JSON-API
+    - name: JSON-API
       type: marcusolsson-json-datasource
-      url: http://perfana:3000
+      url: http://perfana-fe:3000
       access: proxy
       basicAuth: true
       editable: false
-      jsonDatasecureJsonData:
-        basicAuthUser: $__file{/etc/secrets/perfana-api-credentials/perfanaApiUser}
-        basicAuthPassword: $__file{/etc/secrets/perfana-api-credentials/perfanaApiPassword}
+      basicAuthUser: $__file{/etc/secrets/perfana-api-credentials/perfanaApiUser}
+      secureJsonData:
+          basicAuthPassword: $__file{/etc/secrets/perfana-api-credentials/perfanaApiPassword}
+    - name: Prometheus
+      type: prometheus
+      url: http://kube-prometheus-stack-grafana.monitoring:9090
+      access: proxy
+      editable: true
+    - name: InfluxDb
+      type: influxdb
+      url: http://influxdb:8086
+      access: proxy
+      editable: true
+      database: gatling3
+
 notifiers:
   notifiers.yaml:
     notifiers:
@@ -41,11 +56,10 @@ notifiers:
         autoResolve: true
         httpMethod: POST
         uploadImage: false
-        url: http://perfana:3000/api/grafana-alerts
-        basicAuth: true
-        jsonDatasecureJsonData:
-          basicAuthUser: $__file{/etc/secrets/perfana-api-credentials/perfanaApiUser}
-          basicAuthPassword: $__file{/etc/secrets/perfana-api-credentials/perfanaApiPassword}
+        url: http://perfana-fe:3000/api/grafana-alerts
+        username: $__file{/etc/secrets/perfana-api-credentials/perfanaApiUser}
+        password: $__file{/etc/secrets/perfana-api-credentials/perfanaApiPassword}
+
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
@@ -78,6 +92,7 @@ grafana.ini:
         check_for_updates: true
     log:
         mode: console
+        filter: alerting.scheduler:error alerting.engine:error alerting.resultHandler:error alerting.evalHandler:error alerting.evalContext:error alerting.extractor:error alerting.notifier:error alerting.notifier.webhook:error
     grafana_net:
         url: https://grafana.net
     # database
@@ -88,7 +103,8 @@ grafana.ini:
     server:
         domain: grafana.dylan.perfana.cloud
         root_url: https://grafana.${CLUSTER_URL}
-    # sesion
+        enable_gzip: true
+  # sesion
     session:
         provider: mysql
         provider_config: $__file{/etc/secrets/grafana-database/provider_config}
@@ -99,7 +115,10 @@ grafana.ini:
         org_role: Viewer
     # security
     security:
-        allow_embedding: true## grafana Authentication can be enabled with the following values on grafana.ini
+        allow_embedding: true
+env:
+  GF_UNIFIED_ALERTING_ENABLED: "false"
+  GF_ALERTING_ENABLED: "true"
 sidecar:
   image:
     repository: quay.io/kiwigrid/k8s-sidecar

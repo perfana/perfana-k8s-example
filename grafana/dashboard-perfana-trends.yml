@@ -8,93 +8,6 @@ metadata:
 data:
   perfana-trends.json: |
     {
-      "__inputs": [
-        {
-          "name": "DS_JSON_API",
-          "label": "JSON API",
-          "description": "",
-          "type": "datasource",
-          "pluginId": "marcusolsson-json-datasource",
-          "pluginName": "JSON API"
-        },
-        {
-          "name": "VAR_APPLICATION",
-          "type": "constant",
-          "label": "application",
-          "value": "OptimusPrime",
-          "description": ""
-        },
-        {
-          "name": "VAR_TESTTYPE",
-          "type": "constant",
-          "label": "testType",
-          "value": "stressTest",
-          "description": ""
-        },
-        {
-          "name": "VAR_TESTENVIRONMENT",
-          "type": "constant",
-          "label": "testEnvironment",
-          "value": "local",
-          "description": ""
-        },
-        {
-          "name": "VAR_DASHBOARD",
-          "type": "constant",
-          "label": "dashboard",
-          "value": "Gatling InfluxDb",
-          "description": ""
-        },
-        {
-          "name": "VAR_BENCHMARKID",
-          "type": "constant",
-          "label": "benchmarkId",
-          "value": "CMXaXqz4uTdtP5z7L",
-          "description": ""
-        },
-        {
-          "name": "VAR_EVALUATETYPE",
-          "type": "constant",
-          "label": "evaluateType",
-          "value": "avg",
-          "description": ""
-        },
-        {
-          "name": "VAR_PANEL",
-          "type": "constant",
-          "label": "panel",
-          "value": "99th percentile",
-          "description": ""
-        },
-        {
-          "name": "VAR_TAGS",
-          "type": "constant",
-          "label": "tags",
-          "value": "",
-          "description": ""
-        }
-      ],
-      "__elements": [],
-      "__requires": [
-        {
-          "type": "grafana",
-          "id": "grafana",
-          "name": "Grafana",
-          "version": "8.3.1"
-        },
-        {
-          "type": "panel",
-          "id": "graph",
-          "name": "Graph (old)",
-          "version": ""
-        },
-        {
-          "type": "datasource",
-          "id": "marcusolsson-json-datasource",
-          "name": "JSON API",
-          "version": "1.3.1"
-        }
-      ],
       "annotations": {
         "list": [
           {
@@ -113,7 +26,7 @@ data:
             "type": "dashboard"
           },
           {
-            "datasource": "${DS_JSON_API}",
+            "datasource": "JSON-API",
             "enable": true,
             "hide": false,
             "iconColor": "rgba(255, 96, 96, 1)",
@@ -212,8 +125,8 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": null,
-      "iteration": 1645363622051,
+      "id": 2488,
+      "iteration": 1645455530391,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -224,7 +137,7 @@ data:
           "dashes": false,
           "datasource": {
             "type": "marcusolsson-json-datasource",
-            "uid": "${DS_JSON_API}"
+            "uid": "JSON API"
           },
           "fieldConfig": {
             "defaults": {
@@ -278,7 +191,7 @@ data:
               "cacheDurationSeconds": 300,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
-                "uid": "${DS_JSON_API}"
+                "uid": "JSON API"
               },
               "experimentalGroupByField": "target",
               "fields": [
@@ -382,154 +295,58 @@ data:
           {
             "hide": 2,
             "name": "application",
-            "query": "${VAR_APPLICATION}",
+            "query": "OptimusPrime",
             "skipUrlSync": false,
-            "type": "constant",
-            "current": {
-              "value": "${VAR_APPLICATION}",
-              "text": "${VAR_APPLICATION}",
-              "selected": false
-            },
-            "options": [
-              {
-                "value": "${VAR_APPLICATION}",
-                "text": "${VAR_APPLICATION}",
-                "selected": false
-              }
-            ]
+            "type": "constant"
           },
           {
             "hide": 2,
             "name": "testType",
-            "query": "${VAR_TESTTYPE}",
+            "query": "stressTest",
             "skipUrlSync": false,
-            "type": "constant",
-            "current": {
-              "value": "${VAR_TESTTYPE}",
-              "text": "${VAR_TESTTYPE}",
-              "selected": false
-            },
-            "options": [
-              {
-                "value": "${VAR_TESTTYPE}",
-                "text": "${VAR_TESTTYPE}",
-                "selected": false
-              }
-            ]
+            "type": "constant"
           },
           {
             "hide": 2,
             "name": "testEnvironment",
-            "query": "${VAR_TESTENVIRONMENT}",
+            "query": "local",
             "skipUrlSync": false,
-            "type": "constant",
-            "current": {
-              "value": "${VAR_TESTENVIRONMENT}",
-              "text": "${VAR_TESTENVIRONMENT}",
-              "selected": false
-            },
-            "options": [
-              {
-                "value": "${VAR_TESTENVIRONMENT}",
-                "text": "${VAR_TESTENVIRONMENT}",
-                "selected": false
-              }
-            ]
+            "type": "constant"
           },
           {
             "hide": 2,
             "name": "dashboard",
-            "query": "${VAR_DASHBOARD}",
+            "query": "Gatling InfluxDb",
             "skipUrlSync": false,
-            "type": "constant",
-            "current": {
-              "value": "${VAR_DASHBOARD}",
-              "text": "${VAR_DASHBOARD}",
-              "selected": false
-            },
-            "options": [
-              {
-                "value": "${VAR_DASHBOARD}",
-                "text": "${VAR_DASHBOARD}",
-                "selected": false
-              }
-            ]
+            "type": "constant"
           },
           {
             "hide": 2,
             "name": "benchmarkId",
-            "query": "${VAR_BENCHMARKID}",
+            "query": "CMXaXqz4uTdtP5z7L",
             "skipUrlSync": false,
-            "type": "constant",
-            "current": {
-              "value": "${VAR_BENCHMARKID}",
-              "text": "${VAR_BENCHMARKID}",
-              "selected": false
-            },
-            "options": [
-              {
-                "value": "${VAR_BENCHMARKID}",
-                "text": "${VAR_BENCHMARKID}",
-                "selected": false
-              }
-            ]
+            "type": "constant"
           },
           {
             "hide": 2,
             "name": "evaluateType",
-            "query": "${VAR_EVALUATETYPE}",
+            "query": "avg",
             "skipUrlSync": false,
-            "type": "constant",
-            "current": {
-              "value": "${VAR_EVALUATETYPE}",
-              "text": "${VAR_EVALUATETYPE}",
-              "selected": false
-            },
-            "options": [
-              {
-                "value": "${VAR_EVALUATETYPE}",
-                "text": "${VAR_EVALUATETYPE}",
-                "selected": false
-              }
-            ]
+            "type": "constant"
           },
           {
             "hide": 2,
             "name": "panel",
-            "query": "${VAR_PANEL}",
+            "query": "99th percentile",
             "skipUrlSync": false,
-            "type": "constant",
-            "current": {
-              "value": "${VAR_PANEL}",
-              "text": "${VAR_PANEL}",
-              "selected": false
-            },
-            "options": [
-              {
-                "value": "${VAR_PANEL}",
-                "text": "${VAR_PANEL}",
-                "selected": false
-              }
-            ]
+            "type": "constant"
           },
           {
             "hide": 2,
             "name": "tags",
-            "query": "${VAR_TAGS}",
+            "query": "",
             "skipUrlSync": false,
-            "type": "constant",
-            "current": {
-              "value": "${VAR_TAGS}",
-              "text": "${VAR_TAGS}",
-              "selected": false
-            },
-            "options": [
-              {
-                "value": "${VAR_TAGS}",
-                "text": "${VAR_TAGS}",
-                "selected": false
-              }
-            ]
+            "type": "constant"
           }
         ]
       },
@@ -564,6 +381,6 @@ data:
       "timezone": "browser",
       "title": "Perfana trends",
       "uid": "perfana-trends",
-      "version": 4,
+      "version": 1,
       "weekStart": ""
     }
