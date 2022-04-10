@@ -14,20 +14,20 @@ perfanaFe:
     targetPort: http
   ingress:
     enabled: false
-  ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: "letsencrypt-staging"
-    hosts:
-      - host: {{ .Values.perfana-host }}
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-    tls:
-      - hosts:
-          - {{ .Values.perfana-host }}
-        secretName: perfana-tls
+#  ingress:
+#    enabled: true
+#    annotations:
+#      kubernetes.io/ingress.class: nginx
+#      cert-manager.io/cluster-issuer: "letsencrypt-staging"
+#    hosts:
+#      - host: perfana.${PEFANA_DOMAIN}
+#        paths:
+#          - path: /
+#            pathType: ImplementationSpecific
+#    tls:
+#      - hosts:
+#          - perfana.${PEFANA_DOMAIN}
+#        secretName: perfana-tls
   resources:
   env:
     ROOT_URL: {{ .Values.perfana-url }}
