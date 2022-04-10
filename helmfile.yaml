@@ -15,9 +15,11 @@ repositories:
 helmDefaults:
     wait: true
     waitForJobs: true
+    createNamespace: true
 
 releases:
 - name: mysql
+  namespace: perfana
   chart: bitnami/mysql
   values:
     - mysql/values.yaml
@@ -28,6 +30,7 @@ releases:
 #    - values_influxdb.yaml
 #
 - name: grafana
+  namespace: perfana
   chart: grafana/grafana
   needs:
   - mysql
@@ -35,11 +38,13 @@ releases:
   - grafana/values.yaml
 
 - name: mongodb
+  namespace: perfana
   chart: bitnami/mongodb
   values:
   - mongodb/values.yaml
 
 - name: perfana
+  namespace: perfana
   chart: perfana/perfana
   needs:
   - mongodb
