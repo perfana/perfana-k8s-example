@@ -5,6 +5,7 @@ metadata:
   namespace: perfana
   labels:
     grafana_dashboard: "1"
+  
 data:
   perfana-check-results-over-time.json: |
     {

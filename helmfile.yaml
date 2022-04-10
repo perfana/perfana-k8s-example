@@ -1,3 +1,8 @@
+environments:
+  default:
+    values:
+    - default.yaml
+
 repositories:
 - name: bitnami
   url: https://charts.bitnami.com/bitnami
@@ -17,6 +22,8 @@ releases:
   chart: bitnami/mysql
   values:
     - mysql/values.yaml
+  secrets:
+  - mysql/secret-mysql.yaml
 
 #- name: influxdb
 #    chart: influxdata/influxdb
@@ -29,17 +36,24 @@ releases:
   - mysql
   values:
   - grafana/values.yaml
+  secrets:
+  - grafana/secret-grafana.yaml
 
 - name: mongodb
   chart: bitnami/mongodb
   values:
   - mongodb/values.yaml
+  secrets:
+  - mongodb/secret-mongo.yaml
 
 - name: perfana
   chart: perfana/perfana
 #   chart: ../perfana-helm-chart/charts/perfana
   needs:
   - mongodb
+  - grafana
   values:
   - perfana/values.yaml
+  secrets:
+  - perfana/secret-perfana.yaml
 
