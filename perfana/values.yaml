@@ -14,7 +14,15 @@ perfanaFe:
     targetPort: http
   ingress:
     enabled: false
-#  ingress:
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 1
+      memory: 1Gi
+
+  #  ingress:
 #    enabled: true
 #    annotations:
 #      kubernetes.io/ingress.class: nginx
@@ -28,16 +36,21 @@ perfanaFe:
 #      - hosts:
 #          - perfana.${PEFANA_DOMAIN}
 #        secretName: perfana-tls
-  resources:
   env:
-    ROOT_URL: {{ .Values.perfana-url }}
+    ROOT_URL: https://perfana.${PEFANA_DOMAIN}
     PORT: 3000
 
 perfanaGrafana:
     replicaCount: 1
     env:
         SYNC_INTERVAL: 30000  # 30 seconds
-
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 512Mi
 perfanaCheck:
   replicaCount: 1
   service:
@@ -47,6 +60,13 @@ perfanaCheck:
   env:
     SPRING_PROFILES_ACTIVE: "prd"
     JAVA_TOOL_OPTIONS: -Dlogging.level.root=INFO
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
 
 perfanaSnapshot:
   replicaCount: 1

@@ -1,0 +1,34 @@
+image:
+  repository: pyroscope/pyroscope
+  pullPolicy: IfNotPresent
+  tag: "0.4.1"
+persistence:
+  enabled: true
+  size: "50Gi"
+  storageClassName: hcloud-volumes
+pyroscopeConfigs:
+  analytics-opt-out: true
+  retention: 720h
+#ingress:
+#  enabled: true
+#  annotations:
+#    kubernetes.io/ingress.class: nginx
+#    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+#  hosts:
+#    - host: pyroscope.${PEFANA_DOMAIN}
+#      paths:
+#        - path: /
+#          pathType: ImplementationSpecific
+#  tls:
+#    - hosts:
+#        - pyroscope.${PEFANA_DOMAIN}
+#      secretName: pyroscope-tls
+resources:
+  limits:
+    cpu: 1
+    memory: 2Gi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+deploymentStrategy:
+  type: Recreate

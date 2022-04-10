@@ -1,0 +1,70 @@
+provisionDataStore:
+  cassandra: true
+  elasticsearch: false
+  kafka: false
+storage:
+  type: cassandra
+  cassandra:
+    host: cassandra
+    port: 9042
+    tls:
+      enabled: false
+      secretName: cassandra-tls-secret
+    user: perfana
+    usePassword: true
+    keyspace: jaeger_v1_test
+    existingSecret: jaeger-cassandra
+cassandra:
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 10Gi
+    storageClassName: hcloud-volumes
+  config:
+    cluster_name: jaeger
+    seed_size: 1
+    dc_name: dc1
+    rack_name: rack1
+    endpoint_snitch: GossipingPropertyFileSnitch
+schema:
+  extraEnv:
+    - name: TRACE_TTL
+      value: "1209600"
+collector:
+  service:
+    zipkin:
+      port: 9411
+  ingress:
+    enabled: false
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+query:
+  enabled: true
+#  ingress:
+#    enabled: true
+#    annotations:
+#      kubernetes.io/ingress.class: nginx
+#      cert-manager.io/cluster-issuer: "letsencrypt-staging"
+#    hosts:
+#      - host: jaeger.${PEFANA_DOMAIN}
+#        paths:
+#          - path: /
+#            pathType: ImplementationSpecific
+#    tls:
+#      - hosts:
+#          - jaeger.${PEFANA_DOMAIN}
+#        secretName: jaeger-tls
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+agent:
+  enabled: false

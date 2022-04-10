@@ -163,3 +163,10 @@ persistence:
 #    - hosts:
 #        - grafana.${PERFANA_DOMAIN}
 #      secretName: grafana-tls
+resources:
+  limits:
+    cpu: 2
+    memory: 1Gi
+  requests:
+    cpu: 1
+    memory: 512Mi

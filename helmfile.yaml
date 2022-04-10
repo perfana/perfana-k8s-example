@@ -7,6 +7,10 @@ repositories:
   url: https://grafana.github.io/helm-charts
 - name: perfana
   url: https://perfana.github.io/perfana-helm-chart
+- name: jaegertracing
+  url: https://jaegertracing.github.io/helm-charts
+- name: pyroscope-io
+  url:  https://pyroscope-io.github.io/helm-chart
 
 helmDefaults:
     wait: true
@@ -17,8 +21,6 @@ releases:
   chart: bitnami/mysql
   values:
     - mysql/values.yaml
-  secrets:
-  - mysql/secret-mysql.yaml
 
 #- name: influxdb
 #    chart: influxdata/influxdb
@@ -31,24 +33,26 @@ releases:
   - mysql
   values:
   - grafana/values.yaml
-  secrets:
-  - grafana/secret-grafana.yaml
 
 - name: mongodb
   chart: bitnami/mongodb
   values:
   - mongodb/values.yaml
-  secrets:
-  - mongodb/secret-mongo.yaml
 
 - name: perfana
   chart: perfana/perfana
-#   chart: ../perfana-helm-chart/charts/perfana
   needs:
   - mongodb
   - grafana
   values:
   - perfana/values.yaml
-  secrets:
-  - perfana/secret-perfana.yaml
 
+- name: jaeger
+  chart: jaegertracing/jaeger
+  values:
+    - jaeger/values.yaml
+
+- name: pyroscope
+  chart: pyroscope-io/pyroscope
+  values:
+    - pyroscope/values.yaml
