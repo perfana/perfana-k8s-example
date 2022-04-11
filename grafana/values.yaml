@@ -144,7 +144,7 @@ sidecar:
 persistence:
   type: pvc
   enabled: true
-  storageClassName: hcloud-volumes
+  storageClassName: ${STORAGE_CLASS}
   accessModes:
     - ReadWriteOnce
   size: 10Gi

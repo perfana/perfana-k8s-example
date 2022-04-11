@@ -5,7 +5,7 @@ auth:
     existingSecret: mysql-credentials
 persistence:
     enabled: true
-    storageClass: hcloud-volumes
+    storageClass: ${STORAGE_CLASS}
     size: 10Gi
 resources:
     limits:

@@ -5,7 +5,7 @@ image:
 persistence:
   enabled: true
   size: "50Gi"
-  storageClassName: hcloud-volumes
+  storageClassName: ${STORAGE_CLASS}
 pyroscopeConfigs:
   analytics-opt-out: true
   retention: 720h

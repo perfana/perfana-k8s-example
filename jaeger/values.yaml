@@ -19,7 +19,7 @@ cassandra:
     enabled: true
     accessMode: ReadWriteOnce
     size: 10Gi
-    storageClassName: hcloud-volumes
+    storageClassName: ${STORAGE_CLASS}
   config:
     cluster_name: jaeger
     seed_size: 1
