@@ -6,18 +6,16 @@ To facilitate and ease the deployment, you can use
 Then 
 
 ###Change the secrets in the example secret files!
-And then, for a quick install, run:
+and
+###Review all config instances that contain `${PERFANA_DOMAIN}` and ensure that the resulting urls match the values of your ingresses.
 
-```
-kubectl apply -f namespace.yaml 
-```
-
+Then:
+##Install secrets
 ```
 for i in **/secret*.yaml **/dashboard*.yml; do kubectl apply -f $i --namespace perfana; done
 ```
-
-After that, you can run:
-
+And finally:
+##Deploy Perfana 
 ```
 helmfile --namespace perfana apply
 ```

@@ -93,8 +93,8 @@ grafana.ini:
         max_open_conn: 100
     # server
     server:
-        domain: grafana.dylan.perfana.cloud
-        root_url: https://grafana.${CLUSTER_URL}
+        domain: grafana.${PERFANA_DOMAIN}
+        root_url: https://grafana.${PERFANA_DOMAIN}
         enable_gzip: true
   # sesion
     session:
